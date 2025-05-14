@@ -53,7 +53,9 @@ export function PokemonSearcher(){
 
   }, [pokemonSearchTerm, userJwt]);
 
-
+  useEffect(() => {
+    console.log("Pokemon search term value is now: " + pokemonSearchTerm);
+  }, [pokemonSearchTerm]);
 
   // equivalent to componentDidUpdate
   // useEffect(() => {
@@ -122,6 +124,7 @@ export function PokemonSearcher(){
             id="brokenpokemonNameInput" 
             value={pokemonSearchTerm} 
             onChange={(event) => {
+              // console.log(event.target.value);
               setPokemonSearchTerm(event.target.value)
             }}
             onKeyDown={(event) => {
@@ -130,7 +133,10 @@ export function PokemonSearcher(){
               }
             }}
           />
-          <button onClick={() => getSpecificPokemon(pokemonSearchTerm)}>
+          <button data-testid="specificPokemonSearchSubmitButton" onClick={() => {
+            console.log("Specific search button clicked!");
+            getSpecificPokemon(pokemonSearchTerm);
+          }}>
             Search!
           </button>
         </section>
@@ -143,7 +149,7 @@ export function PokemonSearcher(){
 
         
         {pokemonSpriteUrl.length > 0 &&
-          <img src={pokemonSpriteUrl} /> 
+          <img data-testid="pokemonSprite" src={pokemonSpriteUrl} /> 
         }
         
 

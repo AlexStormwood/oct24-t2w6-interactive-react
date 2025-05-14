@@ -36,9 +36,15 @@ describe("PokemonSearcher component tests", () => {
 		const user = userEvent.setup();
 
 		// await user.click(pokemonSearchNameInputElement);
-		// await user.keyboard(pokemonSearchNameInputElement,"pikachu");
+		// await user.keyboard("pikachu");
 
-		await user.type(pokemonSearchNameInputElement,"pikachu");
+		await user.type(
+			pokemonSearchNameInputElement,
+			"pikachu",
+			{
+				skipAutoClose: true
+			}
+		);
 
 		// expect(pokemonSearchNameInputElement.innerText).toBe("pikachu");
 		
@@ -47,8 +53,21 @@ describe("PokemonSearcher component tests", () => {
 		});
 
 		// Find the button to submit the pokemon name to the API 
+		const pokemonSpecificSearchButton = screen.getByTestId("specificPokemonSearchSubmitButton");
+		expect(pokemonSpecificSearchButton).toBeInTheDocument();
+		await user.click(pokemonSpecificSearchButton);
 
 		// Find the content rendered to the page to reflect the API result 
+		waitFor(() => {
+			// find the img element
+			const resultImgElement = screen.getByTestId("pokemonSprite");
+			// check the img element src
+			expect(resultImgElement).toBeInTheDocument();
+			expect(resultImgElement).toHaveAttribute(
+				"src",
+				"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/26.png"
+			);
+		})
 
 	});
 
