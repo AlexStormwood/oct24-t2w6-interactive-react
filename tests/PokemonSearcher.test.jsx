@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { describe, expect, test } from "vitest";
 import { PokemonSearcher } from "../src/components/PokemonSearcher";
 import userEvent from "@testing-library/user-event";
@@ -9,7 +9,7 @@ describe("PokemonSearcher component tests", () => {
 
 	test("PokemonSearcher renders", () => {
 
-		const result = render(
+		render(
 			<UserJwtContext.Provider value={["example test jwt", () => {return "some jwt"}]}>
 				<PokemonSearcher />
 			</UserJwtContext.Provider>
@@ -30,9 +30,11 @@ describe("PokemonSearcher component tests", () => {
 	});
 
 
-	test.skip("Can type in Pokemon name and search for that provided name", async () => {
+	test("Can type in Pokemon name and search for that provided name", async () => {
 
-		const result = render(<PokemonSearcher />);
+		render(<UserJwtContext.Provider value="somevalue">
+			<PokemonSearcher />
+		</UserJwtContext.Provider>);
 
 		// Find the text input field for the pokemon name
 		const pokemonSearchNameInputElement = screen.getByTestId("pokemonNameInput");
@@ -46,15 +48,16 @@ describe("PokemonSearcher component tests", () => {
 		await user.type(
 			pokemonSearchNameInputElement,
 			"pikachu",
-			{
-				skipAutoClose: true
-			}
+			// {
+			// 	skipAutoClose: true
+			// }
 		);
+		// fireEvent.change(pokemonSearchNameInputElement, { target: { value: "pikachu" } } );
 
 		// expect(pokemonSearchNameInputElement.innerText).toBe("pikachu");
 		
 		await waitFor(() => {
-			expect(pokemonSearchNameInputElement.value).toBe("pikachu");
+			expect(pokemonSearchNameInputElement).toHaveValue("pikachu");
 		});
 
 		// Find the button to submit the pokemon name to the API 

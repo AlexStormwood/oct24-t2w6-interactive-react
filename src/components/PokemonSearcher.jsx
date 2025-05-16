@@ -85,7 +85,7 @@ export function PokemonSearcher(){
     let response = await fetch("https://pokeapi.co/api/v2/pokemon/" + targetPokemonValue);
     let data = await response.json();
 
-    console.log(data);
+    // console.log(data);
 
     setPokemonName(data.name);
     setPokemonSpriteUrl(data.sprites.other.home.front_default);
@@ -124,8 +124,11 @@ export function PokemonSearcher(){
             id="brokenpokemonNameInput" 
             value={pokemonSearchTerm} 
             onChange={(event) => {
-              // console.log(event.target.value);
-              setPokemonSearchTerm(event.target.value)
+              // console.log("Event target value: " + event.target.value);
+              // Accessing the value property before giving it to setState
+              // allows the value to be guaranteed to exist
+              const value = event.target.value;
+              setPokemonSearchTerm(value);
             }}
             onKeyDown={(event) => {
               if (event.key === "Enter") {
